@@ -55,7 +55,7 @@ public class ServerService {
         log.info("Pinging server IP: {}", ipAddress);
         Server server = serverRepository.findByIpAddress(ipAddress);
         InetAddress address = InetAddress.getByName(ipAddress);
-        server.setStatus(address.isReachable(10000) ? Status.SERVER_UP : Status.SERVER_DOWN);
+        server.setStatus(address.isReachable(5000) ? Status.SERVER_UP : Status.SERVER_DOWN);
         serverRepository.save(server);
         return server;
     }
