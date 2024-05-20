@@ -85,8 +85,17 @@
                 </td>
                 <td>
                   <a href="" style="cursor: pointer">
-                    <i class="material-icons" title="Ping server">&#xe328;</i>
                     <i
+                      *ngIf="
+                        (filterStatus$ | async) === '' ||
+                        (filterStatus$ | async) !== server.ipAddress
+                      "
+                      class="material-icons"
+                      title="Ping server"
+                      >&#xe328;</i
+                    >
+                    <i
+                      *ngIf="(filterStatus$ | async) === server.ipAddress"
                       class="fa fa-spinner fa-spin"
                       style="font-size: 24px"
                     ></i>
