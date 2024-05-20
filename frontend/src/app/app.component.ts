@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ServerService } from './service/server.service';
 import {
   BehaviorSubject,
@@ -14,6 +14,7 @@ import { DataState } from './enum/data-state.enum';
 import { Status } from './enum/status.enum';
 import { NgForm } from '@angular/forms';
 import { Server } from './interface/server';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ import { Server } from './interface/server';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
+  @ViewChild('table') table: ElementRef;
   appState$: Observable<AppState<CustomResponse>>;
   readonly DataState = DataState;
   readonly Status = Status;
@@ -158,14 +160,11 @@ export class AppComponent implements OnInit {
 
   printReport(): void {
     // window.print();
-    const dataType = 'application/vnd.ms-excel';
-    const tableSelect = document.getElementById('servers');
-    const tableHtml = tableSelect.outerHTML.replace(/ /g, '%20');
-    const downloadLink = document.createElement('a');
-    document.body.appendChild(downloadLink);
-    downloadLink.href = 'data:' + dataType + ' ' + tableHtml;
-    downloadLink.download = 'server-report.xls';
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+      this.table.nativeElement
+    );
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    XLSX.writeFile(wb, 'server-report.xlsx');
   }
 }
