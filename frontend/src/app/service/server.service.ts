@@ -33,28 +33,26 @@ export class ServerService {
         .pipe(tap(console.log), catchError(this.handleError))
     );
 
-  filter$ = (status: Status, response: CustomResponse) =>
+  filterByStatus$ = (status: Status, response: CustomResponse) =>
     <Observable<CustomResponse>>new Observable<CustomResponse>((subscriber) => {
       console.log(response);
-      subscriber.next(
+      const servers = response.data?.servers || [];
+      const filteredServers =
         status === Status.ALL
-          ? { ...response, message: `Servers filtered by ${status} status` }
-          : {
-              ...response,
-              message:
-                response.data.servers.filter(
-                  (server) => server.status === status
-                ).length > 0
-                  ? `Servers filtered by 
-          ${status === Status.SERVER_UP ? 'SERVER UP' : 'SERVER DOWN'} status`
-                  : `No servers of ${status} found`,
-              data: {
-                servers: response.data.servers.filter(
-                  (server) => server.status === status
-                ),
-              },
-            }
-      );
+          ? servers
+          : servers.filter((server) => server.status === status);
+      const message =
+        filteredServers.length > 0
+          ? `Servers filtered by ${status} status`
+          : `No servers of ${status} status found`;
+
+      subscriber.next({
+        ...response,
+        message,
+        data: {
+          servers: filteredServers,
+        },
+      });
       subscriber.complete();
     }).pipe(tap(console.log), catchError(this.handleError));
 

@@ -71,4 +71,26 @@ export class AppComponent implements OnInit {
       })
     );
   }
+
+  filterServers(event: Event): void {
+    const statusValue: String = (event.target as HTMLInputElement).value;
+    const status: Status = Status[statusValue as keyof typeof Status];
+    this.appState$ = this.serverService
+      .filterByStatus$(status, this.dataSubject.value)
+      .pipe(
+        map((response) => {
+          return {
+            dataState: DataState.LOADED_STATE,
+            appData: response,
+          };
+        }),
+        startWith({
+          dataState: DataState.LOADED_STATE,
+          appData: this.dataSubject.value,
+        }),
+        catchError((error: string) => {
+          return of({ dataState: DataState.ERROR_STATE, error });
+        })
+      );
+  }
 }
