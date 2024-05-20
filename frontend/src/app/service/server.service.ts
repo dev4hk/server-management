@@ -9,7 +9,7 @@ import { Status } from '../enum/status.enum';
   providedIn: 'root',
 })
 export class ServerService {
-  private readonly apiUrl = 'any';
+  private readonly apiUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
 
@@ -57,6 +57,7 @@ export class ServerService {
       );
       subscriber.complete();
     }).pipe(tap(console.log), catchError(this.handleError));
+
   delete$ = (serverId: number) =>
     <Observable<CustomResponse>>(
       this.http
