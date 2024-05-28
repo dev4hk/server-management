@@ -1,4 +1,4 @@
-# My Own MVC Framework
+# Server Management
 
 This project is to find if specific servers are up/down
 
