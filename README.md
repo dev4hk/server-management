@@ -12,11 +12,12 @@ This project is to find if specific servers are up/down
 
 ## Tech Stack
 
-- Spring Boot
-- Gradle
-- Spring Data JPA
-- Lombok
-- Angular
+![Static Badge](https://img.shields.io/badge/SpringBoot-blue)
+![Static Badge](https://img.shields.io/badge/SpringWeb-blue)
+![Static Badge](https://img.shields.io/badge/SpringDataJPA-blue)
+![Static Badge](https://img.shields.io/badge/Gradle-blue)
+![Static Badge](https://img.shields.io/badge/MySQL-blue)
+![Static Badge](https://img.shields.io/badge/Angular-blue)
 
 ## Screenshots
 
